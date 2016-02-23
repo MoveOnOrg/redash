@@ -129,7 +129,7 @@
     };
   };
 
-  var WidgetCtrl = function($scope, $location, Events, Query) {
+  var WidgetCtrl = function($scope, $sce, $location, Events, Query) {
     $scope.deleteWidget = function() {
       if (!confirm('Are you sure you want to remove "' + $scope.widget.getName() + '" from the dashboard?')) {
         return;
@@ -164,6 +164,11 @@
       $scope.type = 'visualization';
     } else if ($scope.widget.restricted) {
       $scope.type = 'restricted';
+    } else if ($scope.widget.options.html) {
+      $scope.type = 'htmlbox';
+      $scope.rawHtml = function() {
+        return $sce.trustAsHtml($scope.widget.text);
+      }
     } else {
       $scope.type = 'textbox';
     }
@@ -171,6 +176,6 @@
 
   angular.module('redash.controllers')
     .controller('DashboardCtrl', ['$scope', 'Events', 'Widget', '$routeParams', '$location', '$http', '$timeout', '$q', 'Dashboard', DashboardCtrl])
-    .controller('WidgetCtrl', ['$scope', '$location', 'Events', 'Query', WidgetCtrl])
+    .controller('WidgetCtrl', ['$scope', '$sce', '$location', 'Events', 'Query', WidgetCtrl])
 
 })();

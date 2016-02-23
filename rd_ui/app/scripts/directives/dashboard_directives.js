@@ -109,8 +109,8 @@
     }
   ]);
 
-  directives.directive('newWidgetForm', ['Query', 'Widget', 'growl',
-    function(Query, Widget, growl) {
+  directives.directive('newWidgetForm', ['Query', 'Widget', 'growl', '$sce',
+    function(Query, Widget, growl, $sce) {
       return {
         restrict: 'E',
         scope: {
@@ -127,6 +127,10 @@
             value: 2
           }];
 
+          $scope.rawHtml = function() {
+            return $sce.trustAsHtml($scope.text);
+          }
+
           $scope.type = 'visualization';
 
           $scope.isVisualization = function () {
@@ -137,12 +141,19 @@
             return $scope.type == 'textbox';
           };
 
+          $scope.isHtmlBox = function () {
+            return $scope.type == 'htmlbox';
+          };
+
           $scope.setType = function (type) {
             $scope.type = type;
             if (type == 'textbox') {
               $scope.widgetSizes.push({name: 'Hidden', value: 0});
             } else if ($scope.widgetSizes.length > 2) {
               $scope.widgetSizes.pop();
+            }
+            if (type == 'htmlbox') {
+              $scope.options.html = true;
             }
           };
 
@@ -153,6 +164,7 @@
             $scope.query = {};
             $scope.selected_query = undefined;
             $scope.text = "";
+            $scope.options = {};
           };
 
           reset();
@@ -191,7 +203,7 @@
             var widget = new Widget({
               'visualization_id': $scope.selectedVis && $scope.selectedVis.id,
               'dashboard_id': $scope.dashboard.id,
-              'options': {},
+              'options': $scope.options,
               'width': $scope.widgetSize,
               'text': $scope.text
             });

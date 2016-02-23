@@ -9,6 +9,7 @@
                 <p class="btn-group">
                     <button type="button" class="btn btn-default" ng-class="{active: isVisualization()}" ng-click="setType('visualization')">Visualization</button>
                     <button type="button" class="btn btn-default" ng-class="{active: isTextBox()}" ng-click="setType('textbox')">Text Box</button>
+                    <button type="button" class="btn btn-default" ng-class="{active: isHtmlBox()}" ng-click="setType('htmlbox')">HTML Box</button>
                 </p>
 
                 <div ng-show="isTextBox()">
@@ -18,6 +19,16 @@
                     <div ng-show="text">
                         <strong>Preview:</strong>
                         <p ng-bind-html="text | markdown"></p>
+                    </div>
+                </div>
+
+                <div ng-show="isHtmlBox()">
+                    <div class="form-group">
+                        <textarea class="form-control" ng-model="text" rows="3"></textarea>
+                    </div>
+                    <div ng-show="text">
+                        <strong>Preview:</strong>
+                        <p ng-bind-html="rawHtml()"></p>
                     </div>
                 </div>
 
@@ -50,7 +61,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" ng-disabled="saveInProgress" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-disabled="saveInProgress || !(selectedVis || isTextBox())" ng-click="saveWidget()">Add to Dashboard</button>
+                <button type="button" class="btn btn-primary" ng-disabled="saveInProgress || !(selectedVis || isTextBox() || isHtmlBox())" ng-click="saveWidget()">Add to Dashboard</button>
             </div>
         </div>
         <!-- /.modal-content -->

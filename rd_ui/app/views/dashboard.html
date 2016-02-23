@@ -87,6 +87,21 @@
                     </div>
                 </div>
             </div>
+
+            <div class="panel panel-default rd-widget-textbox" ng-hide="widget.width == 0" ng-if="type=='htmlbox'" ng-mouseenter="showControls = true" ng-mouseleave="showControls = false">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-11">
+                            <p ng-bind-html="rawHtml()"></p>
+                        </div>
+                        <div class="col-lg-1">
+                          <span class="pull-right" ng-show="showControls">
+                              <button type="button" class="btn btn-default btn-xs" ng-show="dashboard.canEdit()" ng-click="deleteWidget()" title="Remove Widget"><span class="glyphicon glyphicon-trash"></span></button>
+                          </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
